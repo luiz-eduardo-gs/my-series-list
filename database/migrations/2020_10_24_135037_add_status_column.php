@@ -14,7 +14,7 @@ class AddStatusColumn extends Migration
     public function up()
     {
         Schema::table('series', function (Blueprint $table) {
-            $table->char('series_status');
+            $table->char('serie_status');
         });
     }
 
@@ -26,7 +26,7 @@ class AddStatusColumn extends Migration
     public function down()
     {
         Schema::table('series', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('serie_status');
         });
     }
 }
