@@ -9,9 +9,15 @@ class Season extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $fillable = ['season_number', 'season_score'];
 
     public function watchedEpisodes()
     {
-        $this->hasOne(WatchedEpisode::class);
+        return $this->hasOne(WatchedEpisode::class);
+    }
+
+    public function serie()
+    {
+        return $this->belongsTo(Serie::class);
     }
 }

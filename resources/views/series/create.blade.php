@@ -8,7 +8,7 @@ Adicionar série
 <link rel="stylesheet" href="{{ URL::asset('static/css/create.css') }}" />
 @endsection
 
-@section('body')
+@section('main')
 @if($errors->any())
 <div class="alert alert-danger">
     @foreach($errors->all() as $error)
@@ -18,10 +18,10 @@ Adicionar série
     @endforeach
 </div>
 @endif
-<div class="container">
+<section class="box">
     <form method="POST" action="/series" enctype="multipart/form-data">
         @csrf
-        <div class="d-flex justify-content-between">
+        <div class="grid">
             <div>
                 <label for="name">Nome da série</label><br>
                 <input name="serie_name" id="name" type="text">
@@ -36,5 +36,5 @@ Adicionar série
         <br><br>
         <button type="submit">Adicionar</button>
     </form>
-</div>
+</section>
 @endsection
