@@ -1,0 +1,49 @@
+body {
+    background: #202020;
+    color: white;
+}
+
+/* Classes */
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.box {
+    border: 1px solid #bbbbbb;
+}
+
+
+.score-link-class {
+    color: white;
+    text-decoration: none;
+}
+
+.score-link-class:hover {
+    /* background: black; */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.progress_count {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.btn:focus {
+    outline: none !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
