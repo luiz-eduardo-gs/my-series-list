@@ -11,25 +11,16 @@
 </head>
 
 <body>
-    <div class="container">
+    <nav class="nav_bar">
+        <ul>
+            <li><a href="/series" class="">Página inicial</a></li>
+        </ul>
+    </nav>
+    <div class="container clear">
         <header>
-            <h1>MySeriesList</h1>
-            <p>Vendo <b>Sua</b> Lista de Séries</p>
+            @yield('header')
         </header>
         <main>
-            <section class="box main_header">
-                <div>
-                    <img alt="Imagem da logo principal" src="{{ URL::asset('static/images/main-logo.png') }}">
-                </div>
-                <div id="nav_status">
-                    <ul>
-                        <li><a href="/series">Todas as séries</a></li>
-                        <li><a href="/series?status=A">Assistindo</a></li>
-                        <li><a href="/series?status=C">Completas</a></li>
-                        <li><a href="/series?status=P">Planejo Assistir</a></li>
-                    </ul>
-                </div>
-            </section>
             @yield('main')
         </main>
         <!-- <footer>

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateSeries {
 
-    public function createSerie($serieName, $seasonQt, $serieImage)
+    public function createSerie($serieName, $seasonQt, $serieImage, $episodes)
     {
         DB::beginTransaction();
         $serie = Serie::create([
@@ -26,11 +26,24 @@ class CreateSeries {
 
         $serie->save();
 
-        for($i = 1; $i <= $seasonQt; $i++) {
-            $serie->seasons()->create([
-                'season_number' => $i,
-                'season_score' => 0
-            ]);
+        if($episodes != null) {
+            for($i = 1; $i <= $seasonQt; $i++) {
+                $season = $serie->seasons()->create([
+                    'season_number' => $i,
+                    'season_score' => 0
+                ]);
+                $season->watchedEpisodes()->create([
+                    'total_episodes_qt' => $episodes
+                ]);
+            }
+        }
+        else {
+            for($i = 1; $i <= $seasonQt; $i++) {
+                $season = $serie->seasons()->create([
+                    'season_number' => $i,
+                    'season_score' => 0
+                ]);
+            }
         }
         DB::commit();
         return $serie;

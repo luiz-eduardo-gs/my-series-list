@@ -22,7 +22,7 @@ class CreateWatchedEpisodesTable extends Migration
 
             $table->foreign('season_id')
                 ->references('id')
-                ->on('series')
+                ->on('seasons')
                 ->onDelete('cascade');
         });
     }

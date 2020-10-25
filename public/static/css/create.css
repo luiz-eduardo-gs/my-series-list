@@ -1,3 +1,9 @@
+header {
+    margin-top: 2%;
+    background: blue;
+    font-size: 50px;
+}
+
 div ul li {
     list-style: none;
 }
@@ -42,7 +48,11 @@ input[name=serie_name] {
     width: 90%;
     margin-right: 5%;
     margin-left: 5%;
+}
 
+input[name=total_episodes_qt] {
+    width: 90%;
+    margin-right: 5%;
 }
 
 input[type=file] {
@@ -51,5 +61,5 @@ input[type=file] {
 
 .grid {
     display:grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 60% 20% 20%;
 }

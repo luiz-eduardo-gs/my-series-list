@@ -9,6 +9,11 @@ Página inicial
 <link rel="stylesheet" href="{{ URL::asset('static/css/index.css') }}" />
 @endsection
 
+@section('header')
+  <h1>MySeriesList</h1>
+  <p>Vendo <b>Sua</b> Lista de Séries</p>
+@endsection
+
 <a id="add_serie_button" href="/series/create"><button>+</button></a>
 
 @section('main')
@@ -23,6 +28,19 @@ Página inicial
   {{ Session::get('error') }}
 </div>
 @endif
+<section class="box main_header">
+  <div>
+    <img alt="Imagem da logo principal" src="{{ URL::asset('static/images/main_logo.png') }}">
+  </div>
+  <div id="nav_status">
+    <ul>
+      <li><a href="/series">Todas as séries</a></li>
+      <li><a href="/series?status=A">Assistindo</a></li>
+      <li><a href="/series?status=C">Completas</a></li>
+      <li><a href="/series?status=P">Planejo Assistir</a></li>
+    </ul>
+  </div>
+</section>
 <section class="box">
   <div id="list_header">
     <h4 class="box">TODAS AS SÉRIES</h4>

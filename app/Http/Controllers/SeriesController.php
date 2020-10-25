@@ -31,7 +31,8 @@ class SeriesController extends Controller
         $serie = $createSeries->createSerie(
             $request->serie_name,
             $request->seasons_qt,
-            $request->file('serie_image')
+            $request->file('serie_image'),
+            $request->total_episodes_qt
         );
 
         return redirect('/series')->with('success', "Série $serie->name criada com sucesso.");
