@@ -11,6 +11,7 @@ Temporadas de {{$serie->serie_name}}
 @endsection
 
 @section('main')
+<a href="/series/{{$serie->id}}/seasons/create" class="btn btn-primary btn-lg" id="add_season">+</a>
 <section class="box">
   <div id="list_header">
     <h4 style="margin-top: 0;" class="box">TEMPORADAS DE THE BIG BANG THEORY</h4>

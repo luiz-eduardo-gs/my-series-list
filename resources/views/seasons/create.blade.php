@@ -1,15 +1,16 @@
 @extends('main_layout')
 
 @section('title')
-Adicionar série
+Adicionar temporadas
 @endsection
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::asset('static/css/create.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('static/css/create_seasons.css') }}" />
 @endsection
 
 @section('header')
-Adicionar séries
+Adicionar temporadas
 @endsection
 
 @section('main')
@@ -22,26 +23,15 @@ Adicionar séries
     @endforeach
 </div>
 @endif
-<section style="margin-top: 120px;" class="box">
-    <form method="POST" action="/series" enctype="multipart/form-data">
+<section style="margin-top: 80px;" class="box">
+    <form method="POST" action="/series/{{$serieId}}/seasons" enctype="multipart/form-data">
         @csrf
-        <div class="grid">
-            <div>
-                <label for="name">Nome da série</label><br>
-                <input name="serie_name" id="name" type="text">
-            </div>
+        <div class="text-center">
             <div>
                 <label for="seasons_qt">Quantidade de temporadas</label><br>
                 <input name="seasons_qt" id="seasons_qt" type="number">
             </div>
-            <div>
-                <label for="total_episodes_qt">Eps. por temp.</label><br>
-                <input name="total_episodes_qt" id="total_episodes_qt" type="number">
-            </div>
         </div>
-        <label for="serie_image">Imagem</label>
-        <input name="serie_image" id="serie_image" type="file">
-        <br><br>
         <button type="submit">Adicionar</button>
     </form>
 </section>

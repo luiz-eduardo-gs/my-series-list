@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Season;
 use App\Models\Serie;
 use App\Models\WatchedEpisode;
+use App\Services\CreateSeasons;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,22 @@ class SeasonsController extends Controller
         $serie = Serie::find($serieId);
         $seasons = $serie->seasons;
         return view('seasons.index', compact('seasons', 'serie'));
+    }
+
+    public function create(Request $request)
+    {
+        $serieId = $request->serieId;
+        return view('seasons.create', compact('serieId'));
+    }
+
+    public function store(Request $request, int $serieId, CreateSeasons $createSeasons)
+    {
+        $createSeasons->createSeason(
+            $serieId,
+            $request->seasons_qt
+        );
+
+        return redirect('/series' . '/' . $serieId . '/seasons');
     }
 
     public function destroy(int $serieId, int $seasonId)
