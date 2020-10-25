@@ -7,6 +7,7 @@ Temporadas de {{$serie->serie_name}}
 @section('css')
 <link rel="stylesheet" href="{{ URL::asset('static/css/bootstrap.css') }}" />
 <link rel="stylesheet" href="{{ URL::asset('static/css/index.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('static/css/index_seasons.css') }}" />
 @endsection
 
 @section('main')
@@ -26,9 +27,10 @@ Temporadas de {{$serie->serie_name}}
         </tr>
       </thead>
       <tbody>
+        <?php $count = 0; ?>
         @foreach($seasons as $season)
         <tr>
-          <td id="status_background">1</td>
+          <td id="status_background"><?php echo ++$count ?></td>
           <td>
             @if(!empty($serie->serie_image))
             <img alt="Imagem da série {{ $serie->serie_image }}" src="{{ URL::asset('static/images/uploads/' .$serie->serie_image) }}" />
@@ -39,7 +41,25 @@ Temporadas de {{$serie->serie_name}}
           <td>{{ $serie->serie_name }} - {{ $season->season_number }}ª temporada</td>
           <td>{{ $season->season_score }}</td>
           <!-- <td id="td_episode_{{$season->id}}"><button id="episode_{{ $season->id }}" class="btn btn-link" onclick="addSelect({{ $season->id }})">0</button></td> -->
-          <td>{{ $season->watchedEpisodes->watched_episodes_qt }} / {{ $season->watchedEpisodes->total_episodes_qt }}</td>
+          <td>
+            <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
+              @csrf
+              <input name="op" value="minus" hidden>
+              <button>
+                {!! file_get_contents('static/icons/minus_circle.svg') !!}
+              </button>
+            </form>
+            {{ $season->watchedEpisodes->watched_episodes_qt }}
+            /
+            {{ $season->watchedEpisodes->total_episodes_qt }}
+            <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
+              @csrf
+              <input name="op" value="plus" hidden>
+              <button>
+                {!! file_get_contents('static/icons/plus_circle.svg') !!}
+              </button>
+            </form>
+          </td>
           <td>
             <button class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
@@ -71,6 +91,18 @@ Temporadas de {{$serie->serie_name}}
       z.appendChild(t);
       document.getElementById(`select_${id}`).appendChild(z);
     }
+  }
+
+  function sendForm(serieId, seasonId, operation) {
+    let formData = new FormData();
+    const token = document.querySelector('input[name="_token"]').value;
+    formData.append('_token', token);
+    formData.append('operation', operation);
+    const url = `/series/${serieId}/seasons/${seasonId}`;
+    fetch(url, {
+      body: formData,
+      method: 'POST'
+    });
   }
 </script>
 @endsection

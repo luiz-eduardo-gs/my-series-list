@@ -25,7 +25,8 @@ class SeriesController extends Controller
     {
         $request->validate([
             'serie_name' => 'required',
-            'seasons_qt' => 'required'
+            'seasons_qt' => 'required',
+            'total_episodes_qt' => 'required'
         ]);
 
         $serie = $createSeries->createSerie(

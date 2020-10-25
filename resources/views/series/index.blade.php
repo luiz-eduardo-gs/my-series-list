@@ -10,8 +10,8 @@ Página inicial
 @endsection
 
 @section('header')
-  <h1>MySeriesList</h1>
-  <p>Vendo <b>Sua</b> Lista de Séries</p>
+<h1>MySeriesList</h1>
+<p>Vendo <b>Sua</b> Lista de Séries</p>
 @endsection
 
 <a id="add_serie_button" href="/series/create"><button>+</button></a>
@@ -56,9 +56,10 @@ Página inicial
         </tr>
       </thead>
       <tbody>
+        <?php $count = 0; ?>
         @foreach($series as $serie)
         <tr>
-          <td id="status_background">1</td>
+          <td id="status_background"><?php echo ++$count ?></td>
           <td>
             @if(!empty($serie->serie_image))
             <img alt="Imagem da série {{ $serie->serie_name }}" src="{{ URL::asset('static/images/uploads/' .$serie->serie_image) }}" />
