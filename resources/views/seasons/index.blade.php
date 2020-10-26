@@ -40,9 +40,16 @@ Temporadas de {{$serie->serie_name}}
             @endif
           </td>
           <td>{{ $serie->serie_name }} - {{ $season->season_number }}ª temporada</td>
-          <td>{{ $season->season_score }}</td>
+          <td id="td_score_{{$season->id}}">
+            <form id="form_score_{{$season->id}}" method="POST" action="/series/{{$serie->id}}/seasons/{{ $season->id }}/updateScore">
+              @csrf
+              <a onclick="addSelect({{$season->id}}, {{$season->season_score}}, 10, 'form_score')">
+                {{ $season->season_score }}
+              </a>
+            </form>
+          </td>
           <!-- <td id="td_episode_{{$season->id}}"><button id="episode_{{ $season->id }}" class="btn btn-link" onclick="addSelect({{ $season->id }})">0</button></td> -->
-          <td>
+          <td id="td_episodes_{{$season->id}}">
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
               @csrf
               <input name="op" value="minus" hidden>
@@ -52,7 +59,12 @@ Temporadas de {{$serie->serie_name}}
             </form>
             {{ $season->watchedEpisodes->watched_episodes_qt }}
             /
-            {{ $season->watchedEpisodes->total_episodes_qt }}
+            <form id="form_total_episodes_{{$season->id}}" method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}/updateTotalEpisodes">
+              @csrf
+              <a onclick="addSelect({{$season->id}}, {{ $season->watchedEpisodes->total_episodes_qt }}, 50, 'form_total_episodes')">
+                {{ $season->watchedEpisodes->total_episodes_qt }}
+              </a>
+            </form>
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
               @csrf
               <input name="op" value="plus" hidden>
@@ -79,19 +91,27 @@ Temporadas de {{$serie->serie_name}}
 </section>
 
 <script>
-  function addSelect(id, range = 30) {
+  function addSelect(id, current, range = 30, formId) {
     var x = document.createElement('SELECT');
-    x.setAttribute("id", `select_${id}`);
-    document.getElementById(`td_episode_${id}`).appendChild(x);
-    document.getElementById(`episode_${id}`).classList.add('invisible');
-
+    x.setAttribute("id", `select_${formId}_${id}`);
+    x.setAttribute("name", `new_value`);
+    x.setAttribute("onchange", `submitForm('${formId}_${id}')`);
+    document.getElementById(`${formId}_${id}`).appendChild(x);
+    document.querySelector(`#${formId}_${id} > a`).hidden = true;
     for (let i = 0; i <= range; i++) {
       var z = document.createElement("option");
       z.setAttribute("value", i);
+      if (i == current) {
+        z.selected = 'selected';
+      }
       var t = document.createTextNode(i);
       z.appendChild(t);
-      document.getElementById(`select_${id}`).appendChild(z);
+      document.getElementById(`select_${formId}_${id}`).appendChild(z);
     }
+  }
+
+  function submitForm(id) {
+    document.getElementById(`${id}`).submit();
   }
 
   function sendForm(serieId, seasonId, operation) {

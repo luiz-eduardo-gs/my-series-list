@@ -26,5 +26,7 @@ Route::delete('/series/{serieId}', [SeriesController::class, 'destroy']);
 Route::get('/series/{serieId}/seasons', [SeasonsController::class, 'index']);
 Route::get('/series/{serieId}/seasons/create', [SeasonsController::class, 'create']);
 Route::post('/series/{serieId}/seasons', [SeasonsController::class, 'store']);
+Route::post('/series/{serieId}/seasons/{seasonId}/updateScore', [SeasonsController::class, 'updateScore']);
+Route::post('/series/{serieId}/seasons/{seasonId}/updateTotalEpisodes', [SeasonsController::class, 'updateTotalEpisodes']);
 Route::delete('/series/{serieId}/seasons/{seasonId}', [SeasonsController::class, 'destroy']);
 Route::post('/series/{serieId}/seasons/{seasonId}', [SeasonsController::class, 'updateWatchedEpisodes']);

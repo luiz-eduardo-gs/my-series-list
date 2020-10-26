@@ -46,6 +46,29 @@ class SeasonsController extends Controller
         return redirect('/series')->with('success', "Temporada $season->season_number de $serie->serie_name deletada com sucesso.");
     }
 
+    public function updateScore(Request $request, int $serieId, int $seasonId)
+    {
+        $newScore = $request->except('_token')["new_value"];
+        $season = Season::find($seasonId);
+        DB::beginTransaction();
+        $season->season_score = $newScore;
+        $season->save();
+        DB::commit();
+        return redirect('/series' . '/' . $serieId . '/seasons');
+    }
+
+    public function updateTotalEpisodes(Request $request, int $serieId, int $seasonId)
+    {
+        $newTotalEpisodes = $request->except('_token')["new_value"];
+        $season = Season::find($seasonId);
+        DB::beginTransaction();
+        $season->watchedEpisodes->total_episodes_qt = (int) $newTotalEpisodes;
+        $season->watchedEpisodes->save();
+        $season->save();
+        DB::commit();
+        return redirect('/series' . '/' . $serieId . '/seasons');
+    }
+
     public function updateWatchedEpisodes(Request $request, int $serieId, int $seasonId)
     {
         DB::beginTransaction();
