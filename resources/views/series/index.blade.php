@@ -38,6 +38,7 @@ Página inicial
       <li><a href="/series?status=A">Assistindo</a></li>
       <li><a href="/series?status=C">Completas</a></li>
       <li><a href="/series?status=P">Planejo Assistir</a></li>
+      <li><a href="/series?status=D">Dropadas</a></li>
     </ul>
   </div>
 </section>
@@ -54,6 +55,9 @@ Página inicial
             break;
           case "A":
             echo strtoupper('Assistindo');
+            break;
+          case "D":
+            echo strtoupper('Dropadas');
             break;
           default: echo strtoupper('Todas as séries');
         }
@@ -82,6 +86,9 @@ Página inicial
               break;
             case "C":
               $color = "blue";
+              break;
+            case "D":
+              $color = "#7a1717";
               break;
             default:
               $color = "green";
@@ -112,7 +119,7 @@ Página inicial
             <form method="POST" action="/series/{{$serie->id}}/updateStatus" id="form_status_{{$serie->id}}">
               @csrf
               <span id="span_status_{{$serie->id}}">{{ $serie->serie_status }}</span>
-              <a hidden id="link_status_{{$serie->id}}" onclick="addSelect('{{$serie->id}}', '{{$serie->serie_status}}', ['A', 'C', 'P'], 'form_status')">
+              <a hidden id="link_status_{{$serie->id}}" onclick="addSelect('{{$serie->id}}', '{{$serie->serie_status}}', ['A', 'C', 'P', 'D'], 'form_status')">
                 {{ $serie->serie_status }}
               </a>
             </form>

@@ -9,46 +9,31 @@ class CreateSeries {
     public function createSerie($serieName, $seasonQt, $serieImage, $episodes, $status)
     {
         DB::beginTransaction();
-        switch($status) {
-            case "A":
-                $serie = Serie::create([
-                    'serie_name' => $serieName,
-                    'serie_status' => 'A',
-                    'serie_image' => '',
-                    'seasons_qt' => $seasonQt
-                ]);break;
-            case "P":
-                $serie = Serie::create([
-                    'serie_name' => $serieName,
-                    'serie_status' => 'P',
-                    'serie_image' => '',
-                    'seasons_qt' => $seasonQt
-                ]);break;
-            case "C":
-                $serie = Serie::create([
-                    'serie_name' => $serieName,
-                    'serie_status' => 'C',
-                    'serie_image' => '',
-                    'seasons_qt' => $seasonQt
+        if ($status == 'C') {
+            $serie = Serie::create([
+                'serie_name' => $serieName,
+                'serie_status' => 'C',
+                'serie_image' => '',
+                'seasons_qt' => $seasonQt
+            ]);
+            for($i = 1; $i <= $seasonQt; $i++) {
+                $season = $serie->seasons()->create([
+                    'season_number' => $i,
+                    'season_score' => 0
                 ]);
-                for($i = 1; $i <= $seasonQt; $i++) {
-                    $season = $serie->seasons()->create([
-                        'season_number' => $i,
-                        'season_score' => 0
-                    ]);
-                    $season->watchedEpisodes()->create([
-                        'watched_episodes_qt' => $episodes,
-                        'total_episodes_qt' => $episodes
-                    ]);
-                }
-                break;
-            default:
-                $serie = Serie::create([
-                    'serie_name' => $serieName,
-                    'serie_status' => 'A',
-                    'serie_image' => '',
-                    'seasons_qt' => $seasonQt
+                $season->watchedEpisodes()->create([
+                    'watched_episodes_qt' => $episodes,
+                    'total_episodes_qt' => $episodes
                 ]);
+            }
+        }
+        else {
+            $serie = Serie::create([
+                'serie_name' => $serieName,
+                'serie_status' => $status,
+                'serie_image' => '',
+                'seasons_qt' => $seasonQt
+            ]);
         }
 
         if(!empty($serieImage)) {
