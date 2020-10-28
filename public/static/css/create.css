@@ -17,7 +17,7 @@ label {
     font-size: 20px;
 }
 
-input {
+input,select {
     padding: 12px 20px;
     margin: 8px 0;
     border: 1px solid #ccc;
@@ -59,7 +59,11 @@ input[type=file] {
     text-align: center;
 }
 
+select[name=serie_status] {
+    width: 80%;
+}
+
 .grid {
     display:grid;
-    grid-template-columns: 60% 20% 20%;
+    grid-template-columns: 50% 20% 20% 10%;
 }

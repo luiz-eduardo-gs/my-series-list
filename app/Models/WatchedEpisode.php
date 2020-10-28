@@ -9,7 +9,7 @@ class WatchedEpisode extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $fillable = ['total_episodes_qt'];
+    protected $fillable = ['watched_episodes_qt', 'total_episodes_qt'];
 
     public function season()
     {

@@ -38,6 +38,14 @@ Adicionar séries
                 <label for="total_episodes_qt">Eps. por temp.</label><br>
                 <input name="total_episodes_qt" id="total_episodes_qt" type="number">
             </div>
+            <div>
+                <label for="serie_status">Status</label><br>
+                <select name="serie_status" id="serie_status">
+                    <option value="A">A</option>
+                    <option value="P">P</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
         </div>
         <label for="serie_image">Imagem</label>
         <input name="serie_image" id="serie_image" type="file">

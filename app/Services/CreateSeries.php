@@ -6,15 +6,50 @@ use Illuminate\Support\Facades\DB;
 
 class CreateSeries {
 
-    public function createSerie($serieName, $seasonQt, $serieImage, $episodes)
+    public function createSerie($serieName, $seasonQt, $serieImage, $episodes, $status)
     {
         DB::beginTransaction();
-        $serie = Serie::create([
-            'serie_name' => $serieName,
-            'serie_status' => 'A',
-            'serie_image' => '',
-            'seasons_qt' => $seasonQt
-        ]);
+        switch($status) {
+            case "A":
+                $serie = Serie::create([
+                    'serie_name' => $serieName,
+                    'serie_status' => 'A',
+                    'serie_image' => '',
+                    'seasons_qt' => $seasonQt
+                ]);break;
+            case "P":
+                $serie = Serie::create([
+                    'serie_name' => $serieName,
+                    'serie_status' => 'P',
+                    'serie_image' => '',
+                    'seasons_qt' => $seasonQt
+                ]);break;
+            case "C":
+                $serie = Serie::create([
+                    'serie_name' => $serieName,
+                    'serie_status' => 'C',
+                    'serie_image' => '',
+                    'seasons_qt' => $seasonQt
+                ]);
+                for($i = 1; $i <= $seasonQt; $i++) {
+                    $season = $serie->seasons()->create([
+                        'season_number' => $i,
+                        'season_score' => 0
+                    ]);
+                    $season->watchedEpisodes()->create([
+                        'watched_episodes_qt' => $episodes,
+                        'total_episodes_qt' => $episodes
+                    ]);
+                }
+                break;
+            default:
+                $serie = Serie::create([
+                    'serie_name' => $serieName,
+                    'serie_status' => 'A',
+                    'serie_image' => '',
+                    'seasons_qt' => $seasonQt
+                ]);
+        }
 
         if(!empty($serieImage)) {
             $fileName = $serieName.".".$serieImage->extension();
@@ -26,7 +61,7 @@ class CreateSeries {
 
         $serie->save();
 
-        if($episodes != null) {
+        if ($status <> "C") {
             for($i = 1; $i <= $seasonQt; $i++) {
                 $season = $serie->seasons()->create([
                     'season_number' => $i,
@@ -37,14 +72,26 @@ class CreateSeries {
                 ]);
             }
         }
-        else {
-            for($i = 1; $i <= $seasonQt; $i++) {
-                $season = $serie->seasons()->create([
-                    'season_number' => $i,
-                    'season_score' => 0
-                ]);
-            }
-        }
+        // Case I don't want to insert episodes when creating serie
+        // if($episodes != null and $status <> "C") {
+        //     for($i = 1; $i <= $seasonQt; $i++) {
+        //         $season = $serie->seasons()->create([
+        //             'season_number' => $i,
+        //             'season_score' => 0
+        //         ]);
+        //         $season->watchedEpisodes()->create([
+        //             'total_episodes_qt' => $episodes
+        //         ]);
+        //     }
+        // }
+        // else {
+        //     for($i = 1; $i <= $seasonQt; $i++) {
+        //         $season = $serie->seasons()->create([
+        //             'season_number' => $i,
+        //             'season_score' => 0
+        //         ]);
+        //     }
+        // }
         DB::commit();
         return $serie;
     }
