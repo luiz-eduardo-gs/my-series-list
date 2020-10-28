@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Season;
 use App\Models\Serie;
 use App\Services\CreateSeries;
 use Exception;
@@ -40,6 +41,20 @@ class SeriesController extends Controller
         $serie = Serie::find($serieId);
         $serie->serie_name = $request->new_serie_name;
         $serie->save();
+    }
+
+    public function updateStatus(Request $request, int $serieId)
+    {
+        $serie = Serie::find($serieId);
+        if ($request->new_value == 'C') {
+            $serie->seasons->each(function (Season $season) {
+                $season->watchedEpisodes->watched_episodes_qt = $season->watchedEpisodes->total_episodes_qt;
+            });
+            $serie->push();
+        }
+        $serie->serie_status = $request->new_value;
+        $serie->save();   
+        return redirect('/series')->with('success', "Status alterado com sucesso.");
     }
 
     public function store(Request $request, CreateSeries $createSeries)

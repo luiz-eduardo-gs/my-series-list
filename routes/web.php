@@ -23,6 +23,7 @@ Route::get('/series', [SeriesController::class, 'index']);
 Route::get('/series/create', [SeriesController::class, 'create']);
 Route::post('/series', [SeriesController::class, 'store']);
 Route::post('/series/{serieId}', [SeriesController::class, 'update']);
+Route::post('/series/{serieId}/updateStatus', [SeriesController::class, 'updateStatus']);
 Route::delete('/series/{serieId}', [SeriesController::class, 'destroy']);
 Route::get('/series/{serieId}/seasons', [SeasonsController::class, 'index']);
 Route::get('/series/{serieId}/seasons/create', [SeasonsController::class, 'create']);

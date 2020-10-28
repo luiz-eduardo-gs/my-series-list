@@ -93,8 +93,16 @@ Página inicial
             </div>
             <a id="serie_name_{{$serie->id}}" href="/series/{{ $serie->id }}/seasons">{{ $serie->serie_name }}</a>
           </td>
-          <td>Média das seasons</td>
-          <td>{{ $serie->serie_status }}</td>
+          <td>0.0</td>
+          <td>
+            <form method="POST" action="/series/{{$serie->id}}/updateStatus" id="form_status_{{$serie->id}}">
+              @csrf
+              <span id="span_status_{{$serie->id}}">{{ $serie->serie_status }}</span>
+              <a hidden id="link_status_{{$serie->id}}" onclick="addSelect('{{$serie->id}}', '{{$serie->serie_status}}', ['A', 'C', 'P'], 'form_status')">
+                {{ $serie->serie_status }}
+              </a>
+            </form>
+          </td>
           <td>
             <button onclick="toggleEdit({{$serie->id}})" class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
             <form method="POST" action="/series/{{ $serie->id }}">
@@ -120,16 +128,18 @@ Página inicial
       tdNameDiv.classList.add('edit_name');
       tdNameDiv.hidden = false;
       tdNameLink.hidden = true;
-
+      document.getElementById(`link_status_${serieId}`).hidden = false;
+      document.getElementById(`span_status_${serieId}`).hidden = true;
     } else {
       tdNameDiv.classList.remove('edit_name');
       tdNameDiv.hidden = true;
       tdNameLink.hidden = false;
+      document.getElementById(`link_status_${serieId}`).hidden = true;
+      document.getElementById(`span_status_${serieId}`).hidden = false;
     }
   }
 
-  function editName(serieId)
-  {
+  function editName(serieId) {
     let formData = new FormData();
     const newSerieName = document.querySelector(`#edit_name_${serieId} > input`).value;
     const token = document.querySelector('input[name="_token"]').value;
@@ -145,7 +155,29 @@ Página inicial
       toggleEdit(serieId);
       document.getElementById(`serie_name_${serieId}`).textContent = newSerieName;
     });
-    
+  }
+
+  function addSelect(id, current, status, formId) {
+    var x = document.createElement('SELECT');
+    x.setAttribute("id", `select_${formId}_${id}`);
+    x.setAttribute("name", `new_value`);
+    x.setAttribute("onchange", `submitForm('${formId}_${id}')`);
+    document.getElementById(`${formId}_${id}`).appendChild(x);
+    document.querySelector(`#${formId}_${id} > a`).hidden = true;
+    for(let i of status) {
+      var z = document.createElement("option");
+      z.setAttribute("value", i);
+      if (i == current) {
+        z.selected = 'selected';
+      }
+      var t = document.createTextNode(i);
+      z.appendChild(t);
+      document.getElementById(`select_${formId}_${id}`).appendChild(z);
+    }
+  }
+
+  function submitForm(id) {
+    document.getElementById(`${id}`).submit();
   }
 </script>
 @endsection

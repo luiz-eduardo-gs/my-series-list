@@ -60,7 +60,7 @@ Temporadas de {{$serie->serie_name}}
               @csrf
               <span>{{ $season->watchedEpisodes->watched_episodes_qt }}</span>
               <a hidden onclick="addSelect({{$season->id}}, {{ $season->watchedEpisodes->watched_episodes_qt }}, {{ $season->watchedEpisodes->total_episodes_qt }}, 'form_watched_episodes')">
-              {{ $season->watchedEpisodes->watched_episodes_qt }}
+                {{ $season->watchedEpisodes->watched_episodes_qt }}
               </a>
             </form>
             /
@@ -146,8 +146,7 @@ Temporadas de {{$serie->serie_name}}
       document.querySelector(`#form_watched_episodes_${seasonId} > span`).hidden = true;
       document.querySelector(`#form_total_episodes_${seasonId} > a`).hidden = false;
       document.querySelector(`#form_total_episodes_${seasonId} > span`).hidden = true;
-    }
-    else {
+    } else {
       document.querySelector(`#td_score_${seasonId} > form > a`).hidden = true;
       document.querySelector(`#td_score_${seasonId} > form > span`).hidden = false;
       document.querySelector(`#form_watched_episodes_${seasonId} > a`).hidden = true;
