@@ -84,9 +84,15 @@ class SeasonsController extends Controller
     public function checkAll(Request $request, int $serieId, int $seasonId)
     {
         DB::beginTransaction();
-        $seasonWatchedEpisodes = Season::find($seasonId)->watchedEpisodes;
+        $serie = Serie::find($serieId);
+        $season = Season::find($seasonId);
+        if($serie->seasons->count() == $season->season_number) {
+            $serie->serie_status = 'C';
+        }
+        $seasonWatchedEpisodes = $season->watchedEpisodes;
         $seasonWatchedEpisodes->watched_episodes_qt = $seasonWatchedEpisodes->total_episodes_qt;
         $seasonWatchedEpisodes->save();
+        $serie->save();
         DB::commit();
         return redirect('/series' . '/' . $serieId . '/seasons');
     }
@@ -94,6 +100,7 @@ class SeasonsController extends Controller
     public function updateWatchedEpisodes(Request $request, int $serieId, int $seasonId)
     {
         DB::beginTransaction();
+        $serie = Serie::find($serieId);
         $season = Season::find($seasonId);
         $watchedEpisodes = $season->watchedEpisodes;
         $episode = WatchedEpisode::find($watchedEpisodes->id);
@@ -107,12 +114,19 @@ class SeasonsController extends Controller
         }
         if ($request->op == 'plus') {
             $episode->watched_episodes_qt +=  1;
+            if(
+                $episode->watched_episodes_qt == $episode->total_episodes_qt and
+                $season->season_number == $serie->seasons->count()
+            ) {
+                $serie->serie_status = 'C';
+            }
         }
         else if($request->op == 'minus'){
             $episode->watched_episodes_qt -=  1;
         }
         $episode->save();
         $season->save();
+        $serie->save();
         DB::commit();
         return redirect('/series' . '/' . $serieId . '/seasons');
     }

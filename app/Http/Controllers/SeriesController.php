@@ -78,6 +78,17 @@ class SeriesController extends Controller
         return redirect('/series')->with('success', "Série $serie->name criada com sucesso.");
     }
 
+    public function updateScore(Request $request, int $serieId)
+    {
+        $newScore = $request->new_value;
+        $serie = Serie::find($serieId);
+        DB::beginTransaction();
+        $serie->serie_score = $newScore;
+        $serie->save();
+        DB::commit();
+        return redirect('/series')->with('success', "Nota da série $serie->serie_name atualizada com sucesso.");
+    }
+
     public function destroy(int $serieId)
     {
         DB::beginTransaction();

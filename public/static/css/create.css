@@ -3,6 +3,9 @@ header {
     background: blue;
     font-size: 50px;
 }
+header span {
+    margin-left: 2%;
+}
 
 div ul li {
     list-style: none;

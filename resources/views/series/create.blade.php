@@ -9,7 +9,7 @@ Adicionar série
 @endsection
 
 @section('header')
-Adicionar séries
+<span>Adicionar séries</span>
 @endsection
 
 @section('main')

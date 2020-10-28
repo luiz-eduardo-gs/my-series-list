@@ -45,22 +45,23 @@ Página inicial
 <section class="box">
   <div id="list_header">
     <h4 class="box">
-      <?php 
-        switch ($status[0]) {
-          case "P":
-            echo strtoupper('Planejo Assistir');
-            break;
-          case "C":
-            echo strtoupper('Completas');
-            break;
-          case "A":
-            echo strtoupper('Assistindo');
-            break;
-          case "D":
-            echo strtoupper('Dropadas');
-            break;
-          default: echo strtoupper('Todas as séries');
-        }
+      <?php
+      switch ($status[0]) {
+        case "P":
+          echo strtoupper('Planejo Assistir');
+          break;
+        case "C":
+          echo strtoupper('Completas');
+          break;
+        case "A":
+          echo strtoupper('Assistindo');
+          break;
+        case "D":
+          echo strtoupper('Dropadas');
+          break;
+        default:
+          echo strtoupper('Todas as séries');
+      }
       ?>
     </h4>
     <table>
@@ -114,7 +115,15 @@ Página inicial
             </div>
             <a id="serie_name_{{$serie->id}}" href="/series/{{ $serie->id }}/seasons">{{ $serie->serie_name }}</a>
           </td>
-          <td>0.0</td>
+          <td>
+            <form method="POST" action="/series/{{$serie->id}}/updateScore" id="form_score_{{$serie->id}}">
+              @csrf
+              <span id="span_score_{{$serie->id}}">{{$serie->serie_score}}</span>
+              <a hidden id="link_score_{{$serie->id}}" onclick="addSelect('{{$serie->id}}', '{{$serie->serie_score}}', [0,1,2,3,4,5,6,7,8,9,10], 'form_score')">
+                {{$serie->serie_score}}
+              </a>
+            </form>
+          </td>
           <td>
             <form method="POST" action="/series/{{$serie->id}}/updateStatus" id="form_status_{{$serie->id}}">
               @csrf
@@ -151,12 +160,16 @@ Página inicial
       tdNameLink.hidden = true;
       document.getElementById(`link_status_${serieId}`).hidden = false;
       document.getElementById(`span_status_${serieId}`).hidden = true;
+      document.getElementById(`link_score_${serieId}`).hidden = false;
+      document.getElementById(`span_score_${serieId}`).hidden = true;
     } else {
       tdNameDiv.classList.remove('edit_name');
       tdNameDiv.hidden = true;
       tdNameLink.hidden = false;
       document.getElementById(`link_status_${serieId}`).hidden = true;
       document.getElementById(`span_status_${serieId}`).hidden = false;
+      document.getElementById(`link_score_${serieId}`).hidden = true;
+      document.getElementById(`span_score_${serieId}`).hidden = false;
     }
   }
 
@@ -185,7 +198,7 @@ Página inicial
     x.setAttribute("onchange", `submitForm('${formId}_${id}')`);
     document.getElementById(`${formId}_${id}`).appendChild(x);
     document.querySelector(`#${formId}_${id} > a`).hidden = true;
-    for(let i of status) {
+    for (let i of status) {
       var z = document.createElement("option");
       z.setAttribute("value", i);
       if (i == current) {
