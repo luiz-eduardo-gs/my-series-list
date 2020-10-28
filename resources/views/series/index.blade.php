@@ -59,7 +59,15 @@ Página inicial
         <?php $count = 0; ?>
         @foreach($series as $serie)
         <tr>
-          <td id="status_background"><?php echo ++$count ?></td>
+          <?php           
+            $color = "";
+            switch($serie->serie_status) {
+              case "P":$color = "gray"; break;
+              case "C":$color = "blue"; break;
+              default: $color = "green"; break;
+            }
+          ?>
+          <td style="background-color: {{$color}};"><?php echo ++$count ?></td>
           <td>
             @if(!empty($serie->serie_image))
             <img alt="Imagem da série {{ $serie->serie_name }}" src="{{ URL::asset('static/images/uploads/' .$serie->serie_image) }}" />

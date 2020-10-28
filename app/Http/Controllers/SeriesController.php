@@ -12,7 +12,21 @@ class SeriesController extends Controller
 {
     public function index()
     {
-        $series = Serie::all();
+        $seriesAll = Serie::all();
+        $url = $_SERVER['REQUEST_URI'];
+        $url_components = parse_url($url);
+        $series = array();
+        try {
+            parse_str($url_components['query'], $params);
+            foreach($seriesAll as $serie){
+                if ($serie->serie_status == $params["status"])
+                    array_push($series, $serie);
+                    
+            }
+        }
+        catch(Exception $e){
+            $series = $seriesAll;
+        }
         return view('series.index', compact('series'));
     }
 
