@@ -17,18 +17,20 @@ class SeriesController extends Controller
         $url = $_SERVER['REQUEST_URI'];
         $url_components = parse_url($url);
         $series = array();
+        $status = array();
         try {
             parse_str($url_components['query'], $params);
+            array_push($status, $params["status"]);
             foreach($seriesAll as $serie){
                 if ($serie->serie_status == $params["status"])
                     array_push($series, $serie);
-                    
             }
         }
         catch(Exception $e){
             $series = $seriesAll;
+            array_push($status, 'T');
         }
-        return view('series.index', compact('series'));
+        return view('series.index', compact('series', 'status'));
     }
 
     public function create()

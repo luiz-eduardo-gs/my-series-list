@@ -43,7 +43,7 @@ class SeasonsController extends Controller
         $serie->seasons_qt = $season->count();
         $serie->save();
         DB::commit();
-        return redirect('/series')->with('success', "Temporada $season->season_number de $serie->serie_name deletada com sucesso.");
+        return redirect('/series' . '/' . $serieId . '/seasons')->with('success', "Temporada $season->season_number de $serie->serie_name deletada com sucesso.");
     }
 
     public function updateScore(Request $request, int $serieId, int $seasonId)

@@ -14,6 +14,7 @@
     <nav class="nav_bar">
         <ul>
             <li><a href="/series" class="">Página inicial</a></li>
+            <li><a href="/series/create" class="">Adicionar série</a></li>
         </ul>
     </nav>
     <div class="container clear">

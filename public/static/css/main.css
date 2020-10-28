@@ -64,6 +64,11 @@ a {
     background-color: #333;
 }
 
+.nav_bar li {
+    float: left;
+    list-style: none;
+}
+
 .nav_bar a {
     float: left;
     color: #f2f2f2;

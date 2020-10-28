@@ -43,7 +43,22 @@ Página inicial
 </section>
 <section class="box">
   <div id="list_header">
-    <h4 class="box">TODAS AS SÉRIES</h4>
+    <h4 class="box">
+      <?php 
+        switch ($status[0]) {
+          case "P":
+            echo strtoupper('Planejo Assistir');
+            break;
+          case "C":
+            echo strtoupper('Completas');
+            break;
+          case "A":
+            echo strtoupper('Assistindo');
+            break;
+          default: echo strtoupper('Todas as séries');
+        }
+      ?>
+    </h4>
     <table>
       <thead>
         <tr>
@@ -70,7 +85,6 @@ Página inicial
               break;
             default:
               $color = "green";
-              break;
           }
           ?>
           <td style="background-color: {{$color}};"><?php echo ++$count ?></td>
