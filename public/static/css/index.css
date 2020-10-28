@@ -116,3 +116,8 @@ footer{
 footer p {
     padding: 15px;
 }
+
+.edit_name {
+    display: flex;
+    justify-content: center;
+}

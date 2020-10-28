@@ -35,6 +35,13 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
+    public function update(Request $request, int $serieId)
+    {
+        $serie = Serie::find($serieId);
+        $serie->serie_name = $request->new_serie_name;
+        $serie->save();
+    }
+
     public function store(Request $request, CreateSeries $createSeries)
     {
         $request->validate([

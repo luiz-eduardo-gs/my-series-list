@@ -59,13 +59,19 @@ Página inicial
         <?php $count = 0; ?>
         @foreach($series as $serie)
         <tr>
-          <?php           
-            $color = "";
-            switch($serie->serie_status) {
-              case "P":$color = "gray"; break;
-              case "C":$color = "blue"; break;
-              default: $color = "green"; break;
-            }
+          <?php
+          $color = "";
+          switch ($serie->serie_status) {
+            case "P":
+              $color = "gray";
+              break;
+            case "C":
+              $color = "blue";
+              break;
+            default:
+              $color = "green";
+              break;
+          }
           ?>
           <td style="background-color: {{$color}};"><?php echo ++$count ?></td>
           <td>
@@ -75,11 +81,22 @@ Página inicial
             <img alt="Imagem da série {{ $serie->serie_name }}" src="{{ URL::asset('static/images/no_image.jpg') }}" />
             @endif
           </td>
-          <td><a href="/series/{{ $serie->id }}/seasons">{{ $serie->serie_name }}</a></td>
+          <td id="td_name_{{$serie->id}}">
+            <div hidden id="edit_name_{{$serie->id}}">
+              <input type="text" value="{{ $serie->serie_name }}">
+              <div>
+                <button onclick="editName({{$serie->id}})" class="btn btn-primary">
+                  {!! file_get_contents('static/icons/check.svg') !!}
+                </button>
+              </div>
+              @csrf
+            </div>
+            <a id="serie_name_{{$serie->id}}" href="/series/{{ $serie->id }}/seasons">{{ $serie->serie_name }}</a>
+          </td>
           <td>Média das seasons</td>
           <td>{{ $serie->serie_status }}</td>
           <td>
-            <button class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
+            <button onclick="toggleEdit({{$serie->id}})" class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
             <form method="POST" action="/series/{{ $serie->id }}">
               @csrf
               @method('DELETE')
@@ -95,4 +112,40 @@ Página inicial
   </div>
 </section>
 
+<script>
+  function toggleEdit(serieId) {
+    let tdNameDiv = document.querySelector(`#td_name_${serieId} > div`);
+    let tdNameLink = document.querySelector(`#td_name_${serieId} > a`);
+    if (tdNameDiv.hidden == true) {
+      tdNameDiv.classList.add('edit_name');
+      tdNameDiv.hidden = false;
+      tdNameLink.hidden = true;
+
+    } else {
+      tdNameDiv.classList.remove('edit_name');
+      tdNameDiv.hidden = true;
+      tdNameLink.hidden = false;
+    }
+  }
+
+  function editName(serieId)
+  {
+    let formData = new FormData();
+    const newSerieName = document.querySelector(`#edit_name_${serieId} > input`).value;
+    const token = document.querySelector('input[name="_token"]').value;
+
+    formData.append('new_serie_name', newSerieName);
+    formData.append('_token', token);
+    const url = `/series/${serieId}`;
+
+    fetch(url, {
+      body: formData,
+      method: 'POST'
+    }).then(() => {
+      toggleEdit(serieId);
+      document.getElementById(`serie_name_${serieId}`).textContent = newSerieName;
+    });
+    
+  }
+</script>
 @endsection

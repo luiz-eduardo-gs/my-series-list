@@ -114,7 +114,7 @@ samp {
   font-size: 1em;
 }
 button,
-input,
+/* input, */
 optgroup,
 /* select, */
 textarea {
