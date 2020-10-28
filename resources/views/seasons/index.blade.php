@@ -82,7 +82,7 @@ Temporadas de {{$serie->serie_name}}
           <td>
             <form method="POST" action="/series/{{$serie->id}}/seasons/{{$season->id}}/checkAll">
               @csrf
-              <button style="color: black;" class="btn btn-info btn-sm">
+              <button onclick="return confirm('Tem certeza que deseja marcar todos os episódios dessa temporada como Assistidos?')" style="color: black;" class="btn btn-info btn-sm">
                 {!! file_get_contents('static/icons/check_all.svg') !!}
               </button>
             </form>
@@ -139,12 +139,22 @@ Temporadas de {{$serie->serie_name}}
   }
 
   function toggleEdit(seasonId) {
-    document.querySelector(`#td_score_${seasonId} > form > a`).hidden = false;
-    document.querySelector(`#td_score_${seasonId} > form > span`).hidden = true;
-    document.querySelector(`#form_watched_episodes_${seasonId} > a`).hidden = false;
-    document.querySelector(`#form_watched_episodes_${seasonId} > span`).hidden = true;
-    document.querySelector(`#form_total_episodes_${seasonId} > a`).hidden = false;
-    document.querySelector(`#form_total_episodes_${seasonId} > span`).hidden = true;
+    if (document.querySelector(`#td_score_${seasonId} > form > a`).hidden == true) {
+      document.querySelector(`#td_score_${seasonId} > form > a`).hidden = false;
+      document.querySelector(`#td_score_${seasonId} > form > span`).hidden = true;
+      document.querySelector(`#form_watched_episodes_${seasonId} > a`).hidden = false;
+      document.querySelector(`#form_watched_episodes_${seasonId} > span`).hidden = true;
+      document.querySelector(`#form_total_episodes_${seasonId} > a`).hidden = false;
+      document.querySelector(`#form_total_episodes_${seasonId} > span`).hidden = true;
+    }
+    else {
+      document.querySelector(`#td_score_${seasonId} > form > a`).hidden = true;
+      document.querySelector(`#td_score_${seasonId} > form > span`).hidden = false;
+      document.querySelector(`#form_watched_episodes_${seasonId} > a`).hidden = true;
+      document.querySelector(`#form_watched_episodes_${seasonId} > span`).hidden = false;
+      document.querySelector(`#form_total_episodes_${seasonId} > a`).hidden = true;
+      document.querySelector(`#form_total_episodes_${seasonId} > span`).hidden = false;
+    }
   }
 </script>
 @endsection
