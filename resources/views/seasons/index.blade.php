@@ -74,6 +74,12 @@ Temporadas de {{$serie->serie_name}}
             </form>
           </td>
           <td>
+            <form method="POST" action="/series/{{$serie->id}}/seasons/{{$season->id}}/checkAll">
+              @csrf
+              <button style="color: black;" class="btn btn-info btn-sm">
+                {!! file_get_contents('static/icons/check_all.svg') !!}
+              </button>
+            </form>
             <button class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
               @csrf

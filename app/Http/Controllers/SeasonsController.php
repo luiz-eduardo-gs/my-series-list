@@ -69,6 +69,16 @@ class SeasonsController extends Controller
         return redirect('/series' . '/' . $serieId . '/seasons');
     }
 
+    public function checkAll(Request $request, int $serieId, int $seasonId)
+    {
+        DB::beginTransaction();
+        $seasonWatchedEpisodes = Season::find($seasonId)->watchedEpisodes;
+        $seasonWatchedEpisodes->watched_episodes_qt = $seasonWatchedEpisodes->total_episodes_qt;
+        $seasonWatchedEpisodes->save();
+        DB::commit();
+        return redirect('/series' . '/' . $serieId . '/seasons');
+    }
+
     public function updateWatchedEpisodes(Request $request, int $serieId, int $seasonId)
     {
         DB::beginTransaction();
