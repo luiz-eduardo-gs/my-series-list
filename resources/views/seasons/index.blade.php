@@ -14,7 +14,7 @@ Temporadas de {{$serie->serie_name}}
 <a href="/series/{{$serie->id}}/seasons/create" class="btn btn-primary btn-lg" id="add_season">+</a>
 <section class="box">
   <div id="list_header">
-    <h4 style="margin-top: 0;" class="box">TEMPORADAS DE THE BIG BANG THEORY</h4>
+    <h4 style="margin-top: 0;" class="box">TEMPORADAS DE {{strtoupper($serie->serie_name)}}</h4>
     <table>
       <thead>
         <tr>
@@ -22,7 +22,6 @@ Temporadas de {{$serie->serie_name}}
           <th>Imagem</th>
           <th>Nome da temporada</th>
           <th>Nota</th>
-          <!-- <th>Nº episódios</th> -->
           <th>Progresso</th>
           <th>Opções</th>
         </tr>
@@ -43,12 +42,12 @@ Temporadas de {{$serie->serie_name}}
           <td id="td_score_{{$season->id}}">
             <form id="form_score_{{$season->id}}" method="POST" action="/series/{{$serie->id}}/seasons/{{ $season->id }}/updateScore">
               @csrf
-              <a onclick="addSelect({{$season->id}}, {{$season->season_score}}, 10, 'form_score')">
+              <span>{{ $season->season_score }}</span>
+              <a hidden onclick="addSelect({{$season->id}}, {{$season->season_score}}, 10, 'form_score')">
                 {{ $season->season_score }}
               </a>
             </form>
           </td>
-          <!-- <td id="td_episode_{{$season->id}}"><button id="episode_{{ $season->id }}" class="btn btn-link" onclick="addSelect({{ $season->id }})">0</button></td> -->
           <td id="td_episodes_{{$season->id}}">
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
               @csrf
@@ -57,11 +56,18 @@ Temporadas de {{$serie->serie_name}}
                 {!! file_get_contents('static/icons/minus_circle.svg') !!}
               </button>
             </form>
-            {{ $season->watchedEpisodes->watched_episodes_qt }}
+            <form id="form_watched_episodes_{{$season->id}}" method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}/updateWatchedEpisodesSelect">
+              @csrf
+              <span>{{ $season->watchedEpisodes->watched_episodes_qt }}</span>
+              <a hidden onclick="addSelect({{$season->id}}, {{ $season->watchedEpisodes->watched_episodes_qt }}, {{ $season->watchedEpisodes->total_episodes_qt }}, 'form_watched_episodes')">
+              {{ $season->watchedEpisodes->watched_episodes_qt }}
+              </a>
+            </form>
             /
             <form id="form_total_episodes_{{$season->id}}" method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}/updateTotalEpisodes">
               @csrf
-              <a onclick="addSelect({{$season->id}}, {{ $season->watchedEpisodes->total_episodes_qt }}, 50, 'form_total_episodes')">
+              <span>{{ $season->watchedEpisodes->total_episodes_qt }}</span>
+              <a hidden onclick="addSelect({{$season->id}}, {{ $season->watchedEpisodes->total_episodes_qt }}, 50, 'form_total_episodes')">
                 {{ $season->watchedEpisodes->total_episodes_qt }}
               </a>
             </form>
@@ -80,7 +86,7 @@ Temporadas de {{$serie->serie_name}}
                 {!! file_get_contents('static/icons/check_all.svg') !!}
               </button>
             </form>
-            <button class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
+            <button onclick="toggleEdit({{$season->id}})" class="btn btn-primary btn-sm">{!! file_get_contents('static/icons/edit.svg') !!}</button>
             <form method="POST" action="/series/{{ $serie->id }}/seasons/{{ $season->id }}">
               @csrf
               @method('DELETE')
@@ -130,6 +136,15 @@ Temporadas de {{$serie->serie_name}}
       body: formData,
       method: 'POST'
     });
+  }
+
+  function toggleEdit(seasonId) {
+    document.querySelector(`#td_score_${seasonId} > form > a`).hidden = false;
+    document.querySelector(`#td_score_${seasonId} > form > span`).hidden = true;
+    document.querySelector(`#form_watched_episodes_${seasonId} > a`).hidden = false;
+    document.querySelector(`#form_watched_episodes_${seasonId} > span`).hidden = true;
+    document.querySelector(`#form_total_episodes_${seasonId} > a`).hidden = false;
+    document.querySelector(`#form_total_episodes_${seasonId} > span`).hidden = true;
   }
 </script>
 @endsection
