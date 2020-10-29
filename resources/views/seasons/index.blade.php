@@ -14,7 +14,7 @@ Temporadas de {{$serie->serie_name}}
 <a href="/series/{{$serie->id}}/seasons/create" class="btn btn-primary btn-lg" id="add_season">+</a>
 <section class="box">
   <div id="list_header">
-    <h4 style="margin-top: 0;" class="box">TEMPORADAS DE {{strtoupper($serie->serie_name)}}</h4>
+    <h4 style="margin-top: 0;" class="box">TEMPORADAS DE {{mb_strtoupper($serie->serie_name)}}</h4>
     <table>
       <thead>
         <tr>

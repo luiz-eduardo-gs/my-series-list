@@ -48,19 +48,19 @@ Página inicial
       <?php
       switch ($status[0]) {
         case "P":
-          echo strtoupper('Planejo Assistir');
+          echo mb_strtoupper('Planejo Assistir');
           break;
         case "C":
-          echo strtoupper('Completas');
+          echo mb_strtoupper('Completas');
           break;
         case "A":
-          echo strtoupper('Assistindo');
+          echo mb_strtoupper('Assistindo');
           break;
         case "D":
-          echo strtoupper('Dropadas');
+          echo mb_strtoupper('Dropadas');
           break;
         default:
-          echo strtoupper('Todas as séries');
+          echo mb_strtoupper('Todas as séries');
       }
       ?>
     </h4>
